@@ -1,15 +1,18 @@
 var mongoose = require('mongoose');
 var Reserva = require('./reserva');
+var uniqueValidator = require('mongoose-unique-validator'); // libreria instalada
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt'); // libreria instalada para encriptar
+var crypto = require('crypto');
 var saltRounds = 10;
 
+const Token = require('../models/token');
+const mailer = require('../mailer/mailer'); // libreria instalada para enviar mensajes
 
 const validateEmail = function(email){
     const re= /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/;
     return re.test(email);
 }
-
 
 var usuarioSchema = new Schema({
     nombre:{
@@ -20,10 +23,12 @@ var usuarioSchema = new Schema({
     email:{
         type: String,
         trim: true,
-        required: [true, 'El nombre es obligatorio'],
+        required: [true, 'El email es obligatorio'],
         lowercase:true,
-        validate: [validateEmail,'Por favor ingrese un email valido'],
-        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/]
+        unique:true,
+        //validate: [validateEmail,'Por favor ingrese un email valido'],
+        //match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/],
+        unique:true
     },
     password:{
         type: String,
@@ -36,6 +41,8 @@ var usuarioSchema = new Schema({
         default:false
     }
 });
+// plugin necesario para verificar q el email sea unico
+usuarioSchema.plugin(uniqueValidator,{message:'El {PATH} ya existe con otro USUARIO'});
 
 usuarioSchema.pre('save',function(next){
     if (this.isModified('password')){
@@ -53,6 +60,35 @@ usuarioSchema.methods.reservar = function (biciId,desde,hasta,cb){
     var reserva = new Reserva ({usuario: this._id,bicicleta: biciId, desde: desde,hasta:hasta});
     console.log(reserva);
     reserva.save(cb);
+};
+
+usuarioSchema.methods.enviar_email_bienvenida = function(cb) {
+    const token = new Token({
+        _userId: this.id,
+        token: crypto.randomBytes(16).toString('hex')
+    });
+    const emailDestination = this.email;
+    
+    token.save(function(err) {
+        if (err) {
+            return console.log(err.message);
+        }
+
+        const mailOptions = {
+            from: 'no-reply@bicicletas.com',
+            to: emailDestination,
+            subject: 'Account Verification',
+            text: 'Hola,\n\n' + 'Please, to verify your account, click on the following link:\n\n' + 'http://localhost:3000' + '\/token/confirmation\/' + token.token
+        };
+
+        mailer.sendMail(mailOptions, function(err) {
+            if (err) {
+                return console.log(err.message);
+            }
+
+            console.log('Email send to ' + emailDestination + '.');
+        });
+    });
 };
 
 module.exports = mongoose.model('Usuario',usuarioSchema);
