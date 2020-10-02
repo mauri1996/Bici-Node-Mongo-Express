@@ -9,7 +9,7 @@ exports.usuarios_list = async (req, res) => {
 };
 
 exports.usuarios_create = async (req, res) => {
-  var usuario = new Usuario({ nombre: req.body.nombre });
+  var usuario = new Usuario({ nombre: req.body.nombre , email: req.body.email , password: req.body.password  });
   await usuario.save((err) => {
     res.status(200).json(usuario);
   });

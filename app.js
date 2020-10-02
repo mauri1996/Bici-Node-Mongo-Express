@@ -1,3 +1,4 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -34,7 +35,12 @@ app.set('secretKey', 'alabenalreycarmesi');
 
 var mongoose = require('mongoose');
 
-var mongoDB = 'mongodb://localhost/red_bicicletas'
+//            base de datos de desarrollo
+//var mongoDB = 'mongodb://localhost/red_bicicletas'
+//            base datos de produccion
+var mongoDB = process.env.MONGO_URI;
+
+// contrasñea de admin mongo :WF4XlhBh0FECJkWW
 mongoose.connect(mongoDB,{useNewUrlParser:true,useUnifiedTopology: true});
 mongoose.Promise = global.Promise;
 var db= mongoose.connection;
