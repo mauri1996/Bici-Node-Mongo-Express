@@ -12,6 +12,8 @@ var bicisRouter = require('./routes/bicicletas');
 var bicisAPIRouter = require('./routes/api/bicicletas');
 var usersAPIRouter = require('./routes/api/usuarios');
 var tokenRouter = require('./routes/token');
+var authAPIrouter = require('./routes/api/auth');
+const jwt = require('jsonwebtoken');
 
 const Usuario = require('./models/usuario');
 const token = require('./models/token');
@@ -27,6 +29,8 @@ app.use(session({
   resave:'true',
   secret:'red_bicis_!!!***!*123123'
 }));
+
+app.set('secretKey', 'alabenalreycarmesi');
 
 var mongoose = require('mongoose');
 
@@ -119,20 +123,34 @@ app.post('/resetPassword', function(req, res) {
 function loggedIn(req, res, next) {
   if(req.user) {
     next(); // si el ussuario existe psa a bicicletas
-    
+
   } else {
     console.log('Usuario sin loguearse');
     res.redirect('/login');
   }
 };
 
+function validarUsuario(req, res, next) {
+  jwt.verify(req.headers['x-access-token'], req.app.get('secretKey'), function(err, decoded) {
+    if (err) {
+      console.log('Error en validar Usuario');
+      res.json({ status: "error", message: err.message, data: null });
+    } else {
+      console.log('Pasó el usuario: ' + req.body.userId);
+      req.body.userId = decoded.id;
+      console.log('JWT verify: ' + decoded);
+      next();
+    }
+  });
+};
 app.use('/', indexRouter);
 app.use('/usuarios', usersRouter);
 app.use('/token', tokenRouter);
 
 
 app.use('/bicicletas',loggedIn, bicisRouter); // se usa loggedIn como middelware para dsar paso a bicicletas
-app.use('/api/bicicletas', bicisAPIRouter);
+app.use('/api/auth',authAPIrouter);
+app.use('/api/bicicletas',validarUsuario ,bicisAPIRouter);
 app.use('/api/usuarios', usersAPIRouter);
 
 // catch 404 and forward to error handler
