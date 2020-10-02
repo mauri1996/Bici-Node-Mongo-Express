@@ -130,6 +130,19 @@ function loggedIn(req, res, next) {
   }
 };
 
+/// funcion q valida es api con el token se debe obtener el token entrando:
+//  http://localhost:3000/api/auth/authenticate
+// se manda:
+// {
+//   "email":"lolpruebana@gmail.com",
+//   "password":"1"
+// }
+// devuelve la inforamcion del usuario y 1 token,
+
+// luego se hace el get de bicicletas mandando el token como headers
+// http://localhost:3000/api/bicicletas
+// x-access-token: token_here
+
 function validarUsuario(req, res, next) {
   jwt.verify(req.headers['x-access-token'], req.app.get('secretKey'), function(err, decoded) {
     if (err) {
