@@ -77,8 +77,9 @@ app.get('/forgotPassword', function (req, res) {
 app.post('/forgotPassword', function (req, res) {  
   Usuario.findOne({ email: req.body.email }, function(err, user) {
     if (!user) return res.render('sessions/forgotPassword', { info: { message: 'No existe el email para un usuario existente' } });
-    
+    console.log('ent');
     user.resetPassword(function(err) {
+      console.log('ent..');
       if (err) return next(err);
       console.log('sessions/forgotPasswordMessage');
     });
@@ -117,18 +118,20 @@ app.post('/resetPassword', function(req, res) {
 
 function loggedIn(req, res, next) {
   if(req.user) {
-    next();
+    next(); // si el ussuario existe psa a bicicletas
+    
   } else {
     console.log('Usuario sin loguearse');
     res.redirect('/login');
   }
 };
+
 app.use('/', indexRouter);
 app.use('/usuarios', usersRouter);
 app.use('/token', tokenRouter);
 
 
-app.use('/bicicletas', bicisRouter);
+app.use('/bicicletas',loggedIn, bicisRouter); // se usa loggedIn como middelware para dsar paso a bicicletas
 app.use('/api/bicicletas', bicisAPIRouter);
 app.use('/api/usuarios', usersAPIRouter);
 
