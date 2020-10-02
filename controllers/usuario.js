@@ -9,7 +9,7 @@ module.exports = {
 
     update_get: function(req, res, next) {
         User.findById(req.params.id, function(err, user) {
-            res.render('usuarios/update', { errors: {}, usuario: usuario });
+            res.render('usuarios/update', { errors: {}, usuario: user });
         });
     },
 
