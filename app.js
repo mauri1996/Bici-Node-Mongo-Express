@@ -176,6 +176,10 @@ app.use('/privacy_polity',function(req,res){
   res.sendFile(__dirname +'/public/privacy_polity.html');
 });
 
+app.use('/google259399f6cf2a79fe',function(req,res){
+  res.sendFile(__dirname +'/public/google259399f6cf2a79fe.html');
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
