@@ -111,8 +111,9 @@ usuarioSchema.methods.resetPassword = function(cb) {
         cb(null);
     });
 };
-usuarioSchema.statics.findOrCreatebyGoogle = function findOneOrCreate( condition, callback){
+usuarioSchema.statics.findOneOrCreatebyGoogle = function findOneOrCreate( condition, callback){
     const self =this;
+    console.log('-------- CONDITION **********');
     console.log(condition);
     self.findOne({
         $or:[
@@ -128,7 +129,7 @@ usuarioSchema.statics.findOrCreatebyGoogle = function findOneOrCreate( condition
                 values.email = condition.emails[0].value;
                 values.nombre = condition.displayName || 'Sin Nombre';
                 values.verificado = true;
-                values.password = condition.json.etag;
+                values.password = 'condition._json.etag';
                 console.log('-------- VALUES --------');
                 console.log(values);
                 self.create(values , (err,result)=>{

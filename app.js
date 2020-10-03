@@ -201,7 +201,8 @@ app.use('/google259399f6cf2a79fe',function(req,res){
 app.get('/auth/google',
   passport.authenticate('google',{scope:[
     'https://www.googleapis.com/auth/plus.login',
-    'https://www.googleapis.com/auth/plus.profile.emails.read']})
+    'https://www.googleapis.com/auth/plus.profile.emails.read',
+    'https://www.googleapis.com/auth/userinfo.email']})
 );
 
 app.get('/auth/google/callback', passport.authenticate('google',{
