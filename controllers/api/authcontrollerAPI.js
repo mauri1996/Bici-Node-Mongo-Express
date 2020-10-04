@@ -29,22 +29,21 @@ module.exports = {
         });
     },
 
-    authFacebookToken: function(req, res, next){
+    authFacebookToken: function(req, res, next) {
         console.log(req);
-        if (req.user){
-            console.log('en');
-            req.user.save().then( ()=>{
-                const token = jwt.sign({ id: req.user.id }, req.app.get('secretKey'), { expiresIn: '7d' });
-                res.status(200).json({ message: "Usuario encontrado", data: { usuario: req.user, token: token}});
-            }).catch((err)=>{
+        if (req.user) {
+            req.user.save().then( () => {
+                const token = jwt.sign( {id: req.user.id }, req.app.get('secretKey'), { expiresIn: '7d'});
+                res.status(200).json( {message: "Usuario encontrado o creado", data: {user: req.user, token: token}});
+            }).catch( (err) => {
                 console.log(err);
-                res.status(500).json({message: err.message});
+                res.status(500).json( {message: err.message});
             });
-            
-        }else{
+        } 
+        else {
             res.status(401);
         }
-    },
+    }
 
 
 }
