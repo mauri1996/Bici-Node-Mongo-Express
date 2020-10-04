@@ -39,7 +39,9 @@ var usuarioSchema = new Schema({
     verificado:{
         type: Boolean,
         default:false
-    }
+    },
+    googleId: String,
+    facebookId: String
 });
 // plugin necesario para verificar q el email sea unico
 usuarioSchema.plugin(uniqueValidator,{message:'El {PATH} ya existe con otro USUARIO'});
@@ -129,7 +131,7 @@ usuarioSchema.statics.findOneOrCreatebyGoogle = function findOneOrCreate( condit
                 values.email = condition.emails[0].value;
                 values.nombre = condition.displayName || 'Sin Nombre';
                 values.verificado = true;
-                values.password = 'condition._json.etag';
+                values.password = crypto.randomBytes(16).toString('hex');
                 console.log('-------- VALUES --------');
                 console.log(values);
                 self.create(values , (err,result)=>{
@@ -141,6 +143,34 @@ usuarioSchema.statics.findOneOrCreatebyGoogle = function findOneOrCreate( condit
 
 };
 
+usuarioSchema.statics.findOneOrCreatebyFacebook = function findOneOrCreate( condition, callback){
+    const self =this;
+    self.findOne({
+        $or:[
+            {'facebookId':condition.id},{'email':condition.emails[0].value}
+        ]}, (err, result) =>{
+            if(result){
+                //console.log('ennn');
+                callback(err,result);
+            }else{
+                console.log('-------- CONDITION --------');
+                console.log(condition);
+                let values = {};
+                values.facebookId = condition.id;
+                values.email = condition.emails[0].value;
+                values.nombre = condition.displayName || 'Sin Nombre';
+                values.verificado = true;
+                values.password = crypto.randomBytes(16).toString('hex');
+                console.log('-------- VALUES --------');
+                console.log(values);
+                self.create(values , (err,result)=>{
+                    if(err) {console.log(err);}
+                    return callback(err,result)
+                })
+            }
+    })
+
+};
 
 
 module.exports = mongoose.model('Usuario',usuarioSchema);
