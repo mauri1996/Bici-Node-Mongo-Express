@@ -1,32 +1,32 @@
+extends ../layout
 block content
+    br
     a(href='/bicicletas') Volver
-
+    br
+    br
+    .mx-auto.text-center
+        h2.text-black-50.mx-auto.mt-2.mb-5 Actualizar Bicicleta
     br
     br
 
-    h1 Actualizar Bicicleta
-
-    br
-    br
-
-    form(action='/bicicletas/'+bici.id+'/update' method='post')
+    form.form-inline.d-flex(action='/bicicletas/'+bici.id+'/update' method='post')
+        .mx-auto.text-center
+            label(for:'code' ) Code:
+            input#id.form-control.flex-fill.mr-0.mr-sm-2.mb-3.mb-sm-0(type='text' name='code' value = bici.code)
+        .mx-auto.text-center
+            label(for:'color' ) Color:
+            input#color.form-control.flex-fill.mr-0.mr-sm-2.mb-3.mb-sm-0(type='text' name='color' value = bici.color)
+        .mx-auto.text-center
+            label(for:'modelo' ) Modelo:
+            input#modelo.form-control.flex-fill.mr-0.mr-sm-2.mb-3.mb-sm-0(type='text' name='modelo' value = bici.modelo)
+        .mx-auto.text-center
+            label(for:'lat' ) Latitud:
+            input#lat.form-control.flex-fill.mr-0.mr-sm-2.mb-3.mb-sm-0(type='text' name='lat' value = bici.ubicacion[0] )
+        .mx-auto.text-center
+            label(for:'lng' ) Longitud:
+            input#lng.form-control.flex-fill.mr-0.mr-sm-2.mb-3.mb-sm-0(type='text' name='lng' value = bici.ubicacion[1])
+        .mx-auto.text-center
+            button.link-button(type='submit' name= 'submit_param' class = 'btn') Ok
+    br   
     
-        label(for:'id' ) ID:
-        input#id(type='text' name='id' value = bici.id)
-        br
-        label(for:'color' ) Color:
-        input#color(type='text' name='color' value = bici.color)
-        br
-        label(for:'modelo' ) Modelo:
-        input#modelo(type='text' name='modelo' value = bici.modelo)
-        br
-        label(for:'lat' ) Latitud:
-        input#lat(type='text' name='lat' value = bici.ubicacion[0] )
-        br
-        label(for:'lng' ) Longitud:
-        input#lng(type='text' name='lng' value = bici.ubicacion[1])
-        br
-        br
-
-        input.btn(type='submit' value='OK')
     

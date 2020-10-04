@@ -89,15 +89,26 @@ app.post('/login', function (req, res, next) {
     if (!user) return res.render('sessions/login', {info});
     req.login(user, function (err) {  
       if (err) return next(err);
-      return res.redirect('/');
+      return res.redirect('/index_usuario');
     })
   })(req, res, next);
 });
+
+app.get('/index_usuario', function (req, res) {  
+  console.log(req.user.nombre);
+  res.render('index_usuario',{usuarioName : req.user.nombre});
+});
+
+app.get('/forgotPassword', function (req, res) {  
+  res.render('sessions/forgotPassword');
+});
+
 
 app.get('/logout', function (req, res) {  
   req.logout();
   res.redirect('/');
 });
+
 app.get('/forgotPassword', function (req, res) {  
   res.render('sessions/forgotPassword');
 });
@@ -146,6 +157,7 @@ app.post('/resetPassword', function(req, res) {
 
 function loggedIn(req, res, next) {
   if(req.user) {
+    app.set('usuario', req.user);
     next(); // si el ussuario existe psa a bicicletas
 
   } else {
@@ -186,6 +198,7 @@ app.use('/token', tokenRouter);
 
 
 app.use('/bicicletas',loggedIn, bicisRouter); // se usa loggedIn como middelware para dsar paso a bicicletas
+
 app.use('/api/auth',authAPIrouter);
 app.use('/api/bicicletas',validarUsuario ,bicisAPIRouter);
 app.use('/api/usuarios', usersAPIRouter);
@@ -227,5 +240,13 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+function estaLogueado(req, res, next) {
+  //req.isAuthenticated viene en passport
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/login");
+ }
 
 module.exports = app;

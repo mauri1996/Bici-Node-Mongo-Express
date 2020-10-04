@@ -1,14 +1,19 @@
 extends ../layout
 
 block content
-    a(href='/bicicletas/create') Nueva Bicicleta
-
+    br
+    br 
+    .mx-auto.text-center
+        h2.text-black-50.mx-auto.mt-2.mb-5 BICICLETAS DISPONIBLES
+    br
     table.table
         thead
             th(scope = 'col') #
             th(scope = 'col') Color
             th(scope = 'col') Modelo
             th(scope = 'col') Ubicacion
+            th(scope = 'col') Edicion
+            th(scope = 'col') Eliminar
         tbody
             each bici in bicis
                 tr
@@ -23,3 +28,10 @@ block content
                         form.inline(method = 'post' action= 'bicicletas/'+bici.id+'/delete')
                             input(type= 'hidden' name= 'id' value = bici.id)
                             button.link-button(type= 'submit' name= 'submit_param' value = 'submit_value' class = 'btn') Eliminar
+    .mx-auto.text-center
+        .container
+            .row
+                .col-md-4.mb-3.mb-md-0
+                    a.btn.btn-primary.js-scroll-trigger(href='/bicicletas/create') Nueva Bicicleta
+                .col-md-4.mb-3.mb-md-0
+                    a.btn.btn-primary.js-scroll-trigger(href='/') Regresar  

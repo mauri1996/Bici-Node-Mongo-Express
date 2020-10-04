@@ -10,7 +10,6 @@ var BicicletaSchema =  new Schema({
     }     
 });
 
-
 BicicletaSchema.statics.createInstance = function(code, color, modelo , ubicacion){
     const newBici = {
         code: code,
@@ -41,9 +40,11 @@ BicicletaSchema.methods.toString = function(){
 };
 
 BicicletaSchema.statics.allBicis = function(cb){
+    //console.log(this.find({},cb));
     return this.find({},cb);
 };
 BicicletaSchema.statics.add = function(aBici,cb){
+    //console.log(aBici);
     // consulta mongoDB
     this.create(aBici,cb);
 };
@@ -53,9 +54,19 @@ BicicletaSchema.statics.findByCode = function(aCode,cb){
     return this.findOne({code: aCode},cb);
 };
 
+BicicletaSchema.statics.findById = function(aId,cb){
+    console.log(aId);
+    return this.findOne({_id: aId},cb);
+};
+
 BicicletaSchema.statics.removeByCode = function(aCode,cb){
-    
+    //console.log(aCode);
     return this.deleteOne({code: aCode},cb);
+};
+
+BicicletaSchema.statics.removeById = function(aId,cb){
+    //console.log(aCode);
+    return this.deleteOne({_id: aId},cb);
 };
 
 module.exports = moongoose.model('Bicicleta',BicicletaSchema);

@@ -1,9 +1,10 @@
 extends ../layout
 
 block content
-  a.btn.btn-success(href='/usuarios/create') New User
-
   br
+  br 
+  .mx-auto.text-center
+    h2.text-black-50.mx-auto.mt-2.mb-5 Usuarios registrados
   br
 
   table.table
@@ -30,3 +31,9 @@ block content
                 input(type='hidden' name='id' value= usuario.id)
                 button.link-button.btn-danger(type='submit' name='submit_param' value='submit_value' class='btn')
                     = 'Eliminar'
+  .mx-auto.text-center
+    .row
+      .col-md-4.mb-3.mb-md-0
+        a.btn.btn-primary.js-scroll-trigger(href='/usuarios/create') New User
+      .col-md-4.mb-3.mb-md-0  
+        a.btn.btn-primary.js-scroll-trigger(href='/') Volver
