@@ -1,32 +1,33 @@
+extends ../layout
 block content
     a(href='/bicicletas') Volver
 
     br
     br
-
-    h1 Nueva Bicicleta
+    .mx-auto.text-center
+        h2.text-black-50.mx-auto.mt-2.mb-5Nueva Bicicleta
 
     br
     br
-
     form(action='/bicicletas/create' method='post')
-    
-        label(for:'id' ) ID:
-        input#id(type='text' name='code')
-        br
-        label(for:'color' ) Color:
-        input#color(type='text' name='color')
-        br
-        label(for:'modelo' ) Modelo:
-        input#modelo(type='text' name='modelo')
-        br
-        label(for:'lat' ) Latitud:
-        input#lat(type='text' name='lat')
-        br
-        label(for:'lng' ) Longitud:
-        input#lng(type='text' name='lng')
+        .mx-auto.text-center
+            label(for:'id' ) ID:
+            input#id.form-control.flex-fill.mr-0.mr-sm-2.mb-3.mb-sm-0(type='text' name='code')
+
+        .mx-auto.text-center
+            label(for:'color' ) Color:
+            input#color.form-control.flex-fill.mr-0.mr-sm-2.mb-3.mb-sm-0(type='text' name='color')
+        .mx-auto.text-center
+            label(for:'modelo' ) Modelo:
+            input#modelo.form-control.flex-fill.mr-0.mr-sm-2.mb-3.mb-sm-0(type='text' name='modelo')
+        .mx-auto.text-center
+            label(for:'lat' ) Latitud:
+            input#lat.form-control.flex-fill.mr-0.mr-sm-2.mb-3.mb-sm-0(type='text' name='lat')
+        .mx-auto.text-center
+            label(for:'lng' ) Longitud:
+            input#lng.form-control.flex-fill.mr-0.mr-sm-2.mb-3.mb-sm-0(type='text' name='lng')
         br
         br
 
-        input.btn(type='submit' value='OK')
+        button.link-button(type='submit' name= 'submit_param' class = 'btn') Ok
     

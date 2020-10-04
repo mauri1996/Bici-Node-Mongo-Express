@@ -10,14 +10,18 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 //L.marker([-2.881507, -90.982387]).addTo(mymap);
 
 $.ajax({
-
     dataType: "json",
+    type: 'GET', 
     url: "api/bicicletas",
-    success: function(result){
+    headers: {"x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNzY2YTdkNmQxNzA3MjBhYzI0NWY0MiIsImlhdCI6MTYwMTY2MDE0OSwiZXhwIjoxNjAyMjY0OTQ5fQ.7-AEtmnhcRen1kaZkcolUOWQKjbcUYXm7fYu6DP9c9M"},
+    //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNzY2YTdkNmQxNzA3MjBhYzI0NWY0MiIsImlhdCI6MTYwMTY2MDE0OSwiZXhwIjoxNjAyMjY0OTQ5fQ.7-AEtmnhcRen1kaZkcolUOWQKjbcUYXm7fYu6DP9c9M",    
+    success: function (result, status, xhr){        
         console.log(result);
-        result.bicicleta.forEach(function(bici) {
-            L.marker(bici.ubicacion,{title: bici.id}).addTo(mymap);
-        });
-        
+        result.bicis.forEach(function(bici) {
+            L.marker(bici.ubicacion,{title: bici.code ,riseOnHover: true}).addTo(mymap);
+        });        
+    },
+    error: function(jqXhr, textStatus, errorMessage){
+        console.log('No se puedo ' +errorMessage );
     }
 })

@@ -57,6 +57,11 @@ usuarioSchema.methods.validPassword = function(password){
     return bcrypt.compareSync(password,this.password);
 }
 
+usuarioSchema.statics.findById = function(aId,cb){
+    //console.log(aId);
+    return this.findOne({_id: aId},cb);
+};
+
 
 usuarioSchema.methods.reservar = function (biciId,desde,hasta,cb){
     var reserva = new Reserva ({usuario: this._id,bicicleta: biciId, desde: desde,hasta:hasta});

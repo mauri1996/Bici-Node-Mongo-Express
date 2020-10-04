@@ -13,23 +13,17 @@ module.exports = {
         });
     },
 
-    update: function(req, res, next) {
-        let update_values = { nombre: req.body.nombre };
-        User.findByIdAndUpdate(req.params.id, update_values, function(err, user) {
-            if (err) {
-                console.log(err);
-                res.render('usuarios/update', {
-                    errors: err.errors,
-                    user: new User({
-                        nombre: req.body.nombre,
-                        email: req.body.email,
-                    }),
-                });
-            } else {
-                res.redirect('/usuarios');
-                return;
-            }
+    update: function(req, res, next) {        
+        //console.log(req.params.id);
+        console.log(req.body);        
+        User.findById(req.params.id, function (err, user) {
+            console.log(user);
+            user.nombre = req.body.nombre;
+            //user.password = user.password;
+            user.save();
+            res.redirect('/usuarios');
         });
+        
     },
 
     create_get: function(req, res, next) {

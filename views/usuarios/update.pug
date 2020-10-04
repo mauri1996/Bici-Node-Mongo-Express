@@ -12,7 +12,7 @@ block content
   br
   br
 
-  form(action=`/usuario/${usuario.id}/update` method='post')
+  form(action=`/usuarios/${usuario.id}/update` method='post')
     .form-group
         label(for='nombre') Name: 
         input#nombre.form-control(type='text' name='nombre' value= usuario.nombre class=errors.name ? 'is-invalid' : '')

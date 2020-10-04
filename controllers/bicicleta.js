@@ -14,12 +14,16 @@ exports.bicicleta_create_get = function(req,res){
 
 
 exports.bicicleta_create_post = function(req,res){
-    var bici = Bicicleta.createInstance(req.body.code, req.body.color, req.body.modelo);    
-    bici.ubicacion = [req.body.lat, req.body.lng];
-    //console.log(bici);
-    Bicicleta.add(bici);
+    if(req.body.code){
+      var bici = Bicicleta.createInstance(req.body.code, req.body.color, req.body.modelo);    
+      bici.ubicacion = [req.body.lat, req.body.lng];
+      //console.log(bici);
+      Bicicleta.add(bici);      
+    }
     res.redirect('/bicicletas');
+
 }
+    
 
 exports.bicicleta_delete_post = function (req, res) {
     //console.log(req.params);
