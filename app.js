@@ -218,12 +218,13 @@ app.get('/auth/google',
     'https://www.googleapis.com/auth/userinfo.email']})
 );
 
+
 app.get('/auth/google/callback', passport.authenticate('google',{
-    successRedirect: '/',
+    successRedirect: '/index_usuario',
     failureRedirect: '/error'
   })
 );
-
+//res.render('index_usuario',{usuarioName : req.user.nombre});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
